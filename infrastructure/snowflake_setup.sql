@@ -4,7 +4,7 @@ CREATE DATABASE dbt_db;
 CREATE ROLE dbt_role;
 SHOW GRANTS ON WAREHOUSE dbt_wh;
 GRANT USAGE ON WAREHOUSE dbt_wh TO ROLE dbt_role;
-GRANT ROLE dbt_role TO USER mo1ben;
+GRANT ROLE dbt_role TO USER <<YOUR_SNOWFLAKE_USERNAME>>;
 GRANT ALL ON DATABASE dbt_db TO ROLE dbt_role;
 USE ROLE dbt_role;
 CREATE SCHEMA dbt_db.dbt_schema;
