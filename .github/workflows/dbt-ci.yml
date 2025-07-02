@@ -1,0 +1,78 @@
+name: dbt CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  dbt-ci:
+    runs-on: ubuntu-latest
+
+    env:
+      # Snowflake
+      SNOWFLAKE_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
+      SNOWFLAKE_USER: ${{ secrets.SNOWFLAKE_USER }}
+      SNOWFLAKE_PASSWORD: ${{ secrets.SNOWFLAKE_PASSWORD }}
+
+      # Soda
+      SODA_CLOUD_HOST: beta.soda.io
+      SODA_CLOUD_API_KEY_ID: ${{ secrets.SODA_CLOUD_API_KEY_ID }}
+      SODA_CLOUD_API_KEY_SECRET: ${{ secrets.SODA_CLOUD_API_KEY_SECRET }}
+
+      # Data source
+      SOURCE_SNOWFLAKE_WAREHOUSE: ${{ secrets.SOURCE_SNOWFLAKE_WAREHOUSE }}
+      SOURCE_SNOWFLAKE_DATABASE: ${{ secrets.SOURCE_SNOWFLAKE_DATABASE }}
+      SOURCE_SNOWFLAKE_SCHEMA: ${{ secrets.SOURCE_SNOWFLAKE_SCHEMA }}
+      SOURCE_SNOWFLAKE_ROLE: ${{ secrets.SOURCE_SNOWFLAKE_ROLE }}
+
+      # Data destination
+      DST_SNOWFLAKE_WAREHOUSE: ${{ secrets.DST_SNOWFLAKE_WAREHOUSE }}
+      DST_SNOWFLAKE_DATABASE: ${{ secrets.DST_SNOWFLAKE_DATABASE }}
+      DST_SNOWFLAKE_SCHEMA: ${{ secrets.DST_SNOWFLAKE_SCHEMA }}
+      DST_SNOWFLAKE_ROLE: ${{ secrets.DST_SNOWFLAKE_ROLE }}
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install python-dotenv
+          pip install dbt-snowflake
+
+      - name: Install other tools
+        run: |
+          pip install -i https://pypi.cloud.soda.io soda-snowflake==1.12.7
+
+      - name: Install dbt deps
+        run: |
+          dbt deps --project-dir ./include/dbt
+
+      - name: Render profiles.yml
+        run: |
+          bash -c '
+            set -e
+            : "${SNOWFLAKE_ACCOUNT?Missing SNOWFLAKE_ACCOUNT}"
+            : "${SNOWFLAKE_USER?Missing SNOWFLAKE_USER}"
+            : "${SNOWFLAKE_PASSWORD?Missing SNOWFLAKE_PASSWORD}"
+            : "${DST_SNOWFLAKE_WAREHOUSE?Missing DST_SNOWFLAKE_WAREHOUSE}"
+            : "${DST_SNOWFLAKE_DATABASE?Missing DST_SNOWFLAKE_DATABASE}"
+            : "${DST_SNOWFLAKE_SCHEMA?Missing DST_SNOWFLAKE_SCHEMA}"
+            : "${DST_SNOWFLAKE_ROLE?Missing DST_SNOWFLAKE_ROLE}"
+            envsubst < ./include/dbt/profiles.yml.template > ./include/dbt/profiles.yml
+          '
+
+      - name: Compile dbt project
+        run: |
+          dbt compile --project-dir ./include/dbt --profiles-dir ./include/dbt
+
+      - name: Run dbt tests
+        run: |
+          dbt test --project-dir ./include/dbt --profiles-dir ./include/dbt --profile data_pipeline --target dev

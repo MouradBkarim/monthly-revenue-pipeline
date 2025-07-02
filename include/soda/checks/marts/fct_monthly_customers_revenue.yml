@@ -1,0 +1,17 @@
+checks for fct_monthly_customers_revenue:
+  - schema:
+      fail:
+        when required column missing:
+          - MONTH
+          - NATION
+          - REGION
+          - CUSTOMER_ID
+          - MONTHLY_REVENUE_WITH_DISCOUNT
+          - MONTHLY_REVENUE_WITHOUT_DISCOUNT
+        when wrong column type:
+          MONTH: DATE
+          NATION: TEXT
+          REGION: TEXT
+          CUSTOMER_ID: NUMBER
+          MONTHLY_REVENUE_WITH_DISCOUNT: NUMBER
+          MONTHLY_REVENUE_WITHOUT_DISCOUNT: NUMBER

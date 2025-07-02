@@ -1,0 +1,25 @@
+models:
+  - name: fct_monthly_customers_revenue
+    description: 'Fact table containing monthly revenue per customer per region.'
+
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - month
+            - customer_id
+            - region
+            - nation
+    columns:
+      - name: customer_id
+        description: 'Unique identifier for customer.'
+        tests:
+          - not_null
+      - name: month
+        description: 'Month of order.'
+        tests:
+          - not_null
+      - name: region
+        description: 'Customer region.'
+        tests:
+          - accepted_values:
+              values: ['AFRICA', 'MIDDLE EAST', 'ASIA', 'AMERICA', 'EUROPE']

@@ -1,0 +1,73 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+ENV/
+.venv/
+*.egg-info/
+.eggs/
+pip-wheel-metadata/
+*.egg
+
+# VSCode
+.vscode/
+.history/
+
+# Airflow
+airflow.db
+unittests.cfg
+*.pid
+logs/
+airflow-webserver.pid
+airflow-scheduler.pid
+
+# Astro (Astronomer)
+.astro/
+include/__pycache__/
+
+# Airflow connections/secrets
+airflow_settings.yaml
+.env
+
+# dbt
+target/
+dbt_modules/
+dbt_packages/
+logs/
+include/dbt/profiles.yml
+
+# Soda
+soda/.soda/
+soda/logs/
+soda/warehouse/
+.soda/
+*.scan.json
+.scan/
+
+# macOS
+.DS_Store
+
+# General
+*.log
+*.sqlite
+*.sqlite3
+*.db
+*.bak
+*.swp
+*~
+
+# Docker
+**/.dockerignore
+docker-compose.override.yml
+docker-compose.local.yml
+
+# Secrets (recommend adding these by name)
+secrets.yaml
+secrets.yml
+*.secret
+*.key
+*.pem

@@ -1,0 +1,23 @@
+checks for ORDERS:
+  - schema:
+      fail:
+        when required column missing:
+          - O_ORDERKEY
+          - O_CUSTKEY
+          - O_ORDERSTATUS
+          - O_TOTALPRICE
+          - O_ORDERDATE
+          - O_ORDERPRIORITY
+          - O_CLERK
+          - O_SHIPPRIORITY
+          - O_COMMENT
+        when wrong column type:
+          O_ORDERKEY: NUMBER
+          O_CUSTKEY: NUMBER
+          O_ORDERSTATUS: TEXT
+          O_TOTALPRICE: NUMBER
+          O_ORDERDATE: DATE
+          O_ORDERPRIORITY: TEXT
+          O_CLERK: TEXT
+          O_SHIPPRIORITY: NUMBER
+          O_COMMENT: TEXT

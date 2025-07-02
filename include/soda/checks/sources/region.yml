@@ -1,0 +1,11 @@
+checks for REGION:
+  - schema:
+      fail:
+        when required column missing:
+          - R_REGIONKEY
+          - R_NAME
+          - R_COMMENT
+        when wrong column type:
+          R_REGIONKEY: NUMBER
+          R_NAME: TEXT
+          R_COMMENT: TEXT

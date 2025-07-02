@@ -1,0 +1,13 @@
+checks for NATION:
+  - schema:
+      fail:
+        when required column missing:
+          - N_NATIONKEY
+          - N_NAME
+          - N_REGIONKEY
+          - N_COMMENT
+        when wrong column type:
+          N_NATIONKEY: NUMBER
+          N_NAME: TEXT
+          N_REGIONKEY: NUMBER
+          N_COMMENT: TEXT

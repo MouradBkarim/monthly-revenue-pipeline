@@ -1,0 +1,24 @@
+data_source raw_tpch_data_snowflake:
+  type: snowflake
+  account: ${SNOWFLAKE_ACCOUNT}
+  username: ${SNOWFLAKE_USER}
+  password: ${SNOWFLAKE_PASSWORD}
+  warehouse: ${SOURCE_SNOWFLAKE_WAREHOUSE}
+  database: ${SOURCE_SNOWFLAKE_DATABASE}
+  schema: ${SOURCE_SNOWFLAKE_SCHEMA}
+  role: ${SOURCE_SNOWFLAKE_ROLE}
+
+data_source dbt_models_snowflake:
+  type: snowflake
+  account: ${SNOWFLAKE_ACCOUNT}
+  username: ${SNOWFLAKE_USER}
+  password: ${SNOWFLAKE_PASSWORD}
+  warehouse: ${DST_SNOWFLAKE_WAREHOUSE}
+  database: ${DST_SNOWFLAKE_DATABASE}
+  schema: ${DST_SNOWFLAKE_SCHEMA}
+  role: ${DST_SNOWFLAKE_ROLE}
+
+soda_cloud:
+  host: ${SODA_CLOUD_HOST}
+  api_key_id: ${SODA_CLOUD_API_KEY_ID}
+  api_key_secret: ${SODA_CLOUD_API_KEY_SECRET}

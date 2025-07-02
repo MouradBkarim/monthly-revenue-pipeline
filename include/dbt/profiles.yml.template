@@ -1,0 +1,13 @@
+data_pipeline:
+  target: dev
+  outputs:
+    dev:
+      type: snowflake
+      account: "$SNOWFLAKE_ACCOUNT"
+      user: "$SNOWFLAKE_USER"
+      password: "$SNOWFLAKE_PASSWORD"
+      warehouse: "$DST_SNOWFLAKE_WAREHOUSE"
+      database: "$DST_SNOWFLAKE_DATABASE"
+      schema: "$DST_SNOWFLAKE_SCHEMA"
+      role: "$DST_SNOWFLAKE_ROLE"
+      threads: 10
